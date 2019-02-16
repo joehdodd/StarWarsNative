@@ -1,7 +1,13 @@
-import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity
+} from "react-native";
 
-const API = 'http://localhost:777';
+const API = "http://localhost:777";
 
 class PeopleListItem extends React.Component {
   onFetch = () => {
@@ -9,11 +15,11 @@ class PeopleListItem extends React.Component {
   };
 
   render() {
-    const textColor = this.props.selected ? 'red' : 'black';
+    const textColor = this.props.selected ? "red" : "black";
     return (
       <TouchableOpacity onPress={this.onFetch}>
         <View>
-          <Text style={{color: textColor}}>{this.props.title}</Text>
+          <Text style={{ color: textColor }}>{this.props.title}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -21,14 +27,9 @@ class PeopleListItem extends React.Component {
 }
 
 class PeopleList extends React.Component {
-
   _keyExtractor = (item, index) => item.id;
 
-  _renderItem = ({item}) => (
-    <PeopleListItem
-      id={item.id}
-    />
-  );
+  _renderItem = ({ item }) => <PeopleListItem id={item.id} />;
 
   render() {
     return (
@@ -43,22 +44,21 @@ class PeopleList extends React.Component {
 }
 
 export default class App extends React.Component {
-  state = { people: []}
+  state = { people: [] };
   getPeople = () => {
-    return fetch(`${API}/people/`)
-      .then(res => {
-        this.setState({ people: [...res.data] })
-      })
-  }
+    return fetch(`${API}/people/`).then(res => {
+      this.setState({ people: [...res.data] });
+    });
+  };
   render() {
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={() => this.getPeople()}>
           <Text>Fetch People!</Text>
         </TouchableOpacity>
-        {!!this.state.people && !!this.state.people.length &&
-          <PeopleList people={this.state.people}
-        }
+        {!!this.state.people && !!this.state.people.length && (
+          <PeopleList people={this.state.people} />
+        )}
       </View>
     );
   }
@@ -67,8 +67,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
