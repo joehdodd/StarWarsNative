@@ -17,21 +17,20 @@ class PeopleListItem extends React.Component {
   render() {
     const textColor = this.props.selected ? "red" : "black";
     return (
-      <TouchableOpacity onPress={this.onFetch}>
-        <View>
-          <Text style={{ color: textColor }}>{this.props.title}</Text>
-        </View>
+      <TouchableOpacity>
+        <Text style={{ color: textColor }}>{this.props.person.name}</Text>
       </TouchableOpacity>
     );
   }
 }
 
 class PeopleList extends React.Component {
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor = (item, index) => (item.id = `${index}`);
 
-  _renderItem = ({ item }) => <PeopleListItem id={item.id} />;
+  _renderItem = ({ item }) => <PeopleListItem person={item} />;
 
   render() {
+    console.log("this.props.people", this.props.people);
     return (
       <FlatList
         data={this.props.people}
@@ -46,19 +45,25 @@ class PeopleList extends React.Component {
 export default class App extends React.Component {
   state = { people: [] };
   getPeople = () => {
-    return fetch(`${API}/people/`).then(res => {
-      console.log('res', res);
-      // this.setState({ people: [...res.data] });
-    });
+    return fetch(`${API}/people/`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ people: [...res.data] });
+      })
+      .catch(err => console.log(err));
   };
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.getPeople()}>
-          <Text>Fetch People!</Text>
-        </TouchableOpacity>
+        <View style={{ flex: 0.5 }}>
+          <TouchableOpacity onPress={() => this.getPeople()}>
+            <Text>Fetch People!</Text>
+          </TouchableOpacity>
+        </View>
         {!!this.state.people && !!this.state.people.length && (
-          <PeopleList people={this.state.people} />
+          <View style={{ flex: 0.5 }}>
+            <PeopleList people={this.state.people} />
+          </View>
         )}
       </View>
     );
