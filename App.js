@@ -7,7 +7,7 @@ import {
   TouchableOpacity
 } from "react-native";
 
-const API = "http://localhost:777";
+const API = "http://localhost:7777/api";
 
 class PeopleListItem extends React.Component {
   onFetch = () => {
@@ -47,7 +47,8 @@ export default class App extends React.Component {
   state = { people: [] };
   getPeople = () => {
     return fetch(`${API}/people/`).then(res => {
-      this.setState({ people: [...res.data] });
+      console.log('res', res);
+      // this.setState({ people: [...res.data] });
     });
   };
   render() {
