@@ -55,13 +55,13 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{ flex: 0.5 }}>
+        <View style={{ flex: 0.25 }}>
           <TouchableOpacity onPress={() => this.getPeople()}>
             <Text>Fetch People!</Text>
           </TouchableOpacity>
         </View>
         {!!this.state.people && !!this.state.people.length && (
-          <View style={{ flex: 0.5 }}>
+          <View style={{ flex: 0.25 }}>
             <PeopleList people={this.state.people} />
           </View>
         )}
