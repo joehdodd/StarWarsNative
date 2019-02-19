@@ -77,7 +77,7 @@ export default class App extends React.Component {
         <View
           style={{ ...styles.centeredContainer, width: "100%", height: "5%" }}
         >
-          <Text style={{ fontSize: 30, fontWeight: "bold", color: "#ffa72b" }}>
+          <Text style={{ fontSize: 24, fontWeight: "bold", color: "#ffa72b" }}>
             S T A R    W A R S    N A T I V E
           </Text>
         </View>
@@ -90,7 +90,9 @@ export default class App extends React.Component {
             </Text>
           </TouchableOpacity>
           {!!this.state.people && !!this.state.people.length && (
-            <PeopleList people={this.state.people} />
+            <View style={{ width: "90%", height: '100%' }}>
+              <PeopleList people={this.state.people} />
+            </View>
           )}
         </View>
       </View>
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
   peopleItem: {
     flex: 1,
     backgroundColor: "#c4d4e0",
-    width: 400,
+    width: "100%",
     marginBottom: 16,
     borderRadius: 4,
     padding: 8,
