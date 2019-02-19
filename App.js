@@ -84,7 +84,7 @@ export default class App extends React.Component {
           style={{ ...styles.centeredContainer, width: "100%", height: "5%" }}
         >
           <Text style={{ fontSize: 24, fontWeight: "bold", color: "#ffa72b" }}>
-            S T A R W A R S N A T I V E
+            S T A R    W A R S    N A T I V E
           </Text>
         </View>
         <View
