@@ -4,19 +4,16 @@ import {
   Text,
   View,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Picker
 } from "react-native";
 
 const API = "http://localhost:7777/api";
 
 class PeopleListItem extends React.Component {
-  onFetch = () => {
-    this.props.onPressItem(this.props.id);
-  };
-
   render() {
     return (
-      <View style={styles.peopleItem}>
+      <View style={styles.cardContainer}>
         <TouchableOpacity>
           <Text
             style={{
@@ -62,14 +59,23 @@ class PeopleList extends React.Component {
 
 export default class App extends React.Component {
   state = { people: [] };
-  getPeople = () => {
-    return fetch(`${API}/people/`)
+
+  apiFetch = (personId = null) => {
+    let url = !!personId ? `${API}/people/${personId}` : `${API}/people/`;
+    return fetch(url)
       .then(res => res.json())
       .then(res => {
         console.log("res.data", res.data);
         this.setState({ people: [...res.data] });
       })
       .catch(err => console.log(err));
+  };
+  getPeople = () => {
+    return this.apiFetch();
+  };
+  getPerson = personId => {
+    this.setState({ personId });
+    return this.apiFetch(personId);
   };
   render() {
     return (
@@ -78,19 +84,46 @@ export default class App extends React.Component {
           style={{ ...styles.centeredContainer, width: "100%", height: "5%" }}
         >
           <Text style={{ fontSize: 24, fontWeight: "bold", color: "#ffa72b" }}>
-            S T A R    W A R S    N A T I V E
+            S T A R W A R S N A T I V E
           </Text>
         </View>
         <View
           style={{ ...styles.startContainer, width: "100%", height: "95%" }}
         >
-          <TouchableOpacity onPress={() => this.getPeople()}>
-            <Text style={{ ...styles.blueText, fontWeight: "bold" }}>
-              Fetch All Star Wars People
-            </Text>
-          </TouchableOpacity>
+          <View style={{ ...styles.cardContainer, width: "90%" }}>
+            <View style={{ alignItems: "center" }}>
+              <TouchableOpacity
+                onPress={() => this.getPeople()}
+                style={styles.button}
+              >
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontWeight: "bold",
+                    textAlign: "center"
+                  }}
+                >
+                  Fetch All Star Wars People
+                </Text>
+              </TouchableOpacity>
+              <Picker
+                selectedValue={this.state.personId}
+                style={{ height: 50, width: "100%" }}
+                itemStyle={{ ...styles.blueText, height: 45 }}
+                onValueChange={(itemValue, itemIndex) =>
+                  this.getPerson(itemValue)
+                }
+              >
+                <Picker.Item label="Luke Skywalker" value="1" />
+                <Picker.Item label="C-3PO" value="2" />
+                <Picker.Item label="R2-D2" value="3" />
+                <Picker.Item label="Darth Vader" value="4" />
+                <Picker.Item label="Leia Organa" value="5" />
+              </Picker>
+            </View>
+          </View>
           {!!this.state.people && !!this.state.people.length && (
-            <View style={{ width: "90%", height: '100%' }}>
+            <View style={{ width: "90%", height: "100%" }}>
               <PeopleList people={this.state.people} />
             </View>
           )}
@@ -121,15 +154,20 @@ const styles = StyleSheet.create({
     color: "#437bb4",
     fontSize: 16
   },
-  peopleItem: {
-    flex: 1,
+  button: {
+    width: "90%",
+    backgroundColor: "#437bb4",
+    borderColor: "#000",
+    borderBottomWidth: 0,
+    borderRadius: 4,
+    padding: 8
+  },
+  cardContainer: {
     backgroundColor: "#c4d4e0",
     width: "100%",
     marginBottom: 16,
     borderRadius: 4,
     padding: 8,
-    borderWidth: 1,
-    borderRadius: 4,
     borderColor: "#000",
     borderBottomWidth: 0,
     shadowColor: "#000",
